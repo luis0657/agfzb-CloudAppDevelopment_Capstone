@@ -7,7 +7,7 @@ env:
   IBM_CLOUD_REGION: us-south
   IBM_CLOUD_GROUP: default
   IBM_CLOUD_SPACE: Space_2
-  IBM_CLOUD_ORG: Pablo Garcia
+  IBM_CLOUD_ORG: Pablo_Garcia
   MANIFEST_NAME: manifest.yml
   IBM_CLOUD_API: ${{secrets.IBM_CLOUD_API_KEY}}
 
