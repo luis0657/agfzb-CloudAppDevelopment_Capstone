@@ -1,11 +1,11 @@
   applications:
   - name: djangoapp
     routes:
-      - route: final-exam369.mybluemix.net 
+      - route: final-exam37.mybluemix.net 
     memory: 128M
     buildpack: python_buildpack
   - name: djangoapp-nginx
     routes:
-      - route: final-exam369.mybluemix.net/static
+      - route: final-exam37.mybluemix.net/static
     memory: 128M
     buildpack: staticfile_buildpack
