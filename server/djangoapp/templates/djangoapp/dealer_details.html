@@ -5,14 +5,158 @@
     <title>Dealership Review</title>
     {% load static %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dealer Detail</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <link href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css" rel="stylesheet">
+        <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+        <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    
 </head>
 
     <body>
 
-    <!--Add a nav bar here -->
+<!--Add a nav bar here -->
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Online Course</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+            <li>
+                <a class="btn btn-link" href="{% url 'djangoapp:index'%}">Index</a>
+                <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
+                <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
+                <a class="btn btn-link" href="{% url 'djangoapp:about'%}">About</a>
+                <a class="btn btn-link" href="{% url 'djangoapp:contact' %}">Contact us</a>
+            </li>
+            {% else %}
+            <li>
+                <form class="form-inline" action="{% url 'djangoapp:login' %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <a class="btn btn-link" href="{% url 'djangoapp:index'%}">Index</a>
+                        <input type="text" class="form-control" placeholder="Username" name="username" >
+                        <input type="password" class="form-control" placeholder="Password" name="psw" >
+                        <button class="btn btn-primary" type="submit">Login</button>
+                        <a class="btn btn-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
+                        <a class="btn btn-link" href="{% url 'djangoapp:about'%}">About</a>
+                        <a class="btn btn-link" href="{% url 'djangoapp:contact' %}">Contact us</a>
+
+                    </div>
+                </form>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
 
     <!-- Add reviews as cards -->
+<!--Add a dealer table here -->
 
-    </body>
+
+<table class="table" id="table">
+    <thead>
+        <tr>
+            <th data-field="id">ID</th>
+            <th data-field="id">Dealer Name</th>
+            <th data-field="id">City</th>
+            <th data-field="id">Address</th>
+            <th data-field="id">Zip</th>
+            <th data-field="id">State</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for dealer in dealership %}
+            <tr>
+                <td>{{dealer.id}}</td>
+                <td>{{dealer.full_name}}</td>
+                <td>{{dealer.city}}</td>
+                <td>{{dealer.address}}</td>
+                <td>{{dealer.zip}}</td>
+                <td>{{dealer.st}}</td>
+
+                {% if user.is_authenticated %}
+                <td><a class="btn btn-link" href="{% url 'djangoapp:add_review' dealer.id %}">Add_review</a></td>
+                {% endif %}
+            </tr>
+            
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- <table class="table" id="table">
+    <thead>
+        <tr>
+            <th data-field="id">Dealership</th>
+            <th data-field="id">Dealer Name</th>
+            <th data-field="id">Review</th>
+            <th data-field="id">Car Make</th>
+            <th data-field="id">Car Model</th>
+            <th data-field="id">Car Year</th>
+            <th data-field="id">Sentiment</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for dealer in review %}
+            <tr>
+                <td>{{dealer.dealership}}</td>
+                <td>{{dealer.name}}</td>
+                <td>{{dealer.review}}</td>
+                <td>{{dealer.car_make}}</td>
+                <td>{{dealer.car_model}}</td>
+                <td>{{dealer.car_year}}</td>
+                <td>{{dealer.sentiment}}</td>
+
+            </tr>
+            
+        {% endfor %}
+    </tbody>
+</table> -->
+
+<div class="card-columns">
+    {% for dealer in review %}
+
+    <div class="card">
+
+        {% if dealer.sentiment == "positive" %}
+        <img class="card-img-left" src="{{MEDIA_URL}}/emoji/positive.png"> 
+
+        {% elif dealer.sentiment == "negative" %}
+        <img class="card-img-left" src="{{MEDIA_URL}}/emoji/negative.png"> 
+
+        {% else %}
+        <img class="card-img-left" src="{{MEDIA_URL}}/emoji/neutral.png"> 
+
+
+        {% endif %}
+
+        <div class="card-body">
+            <h5 class="card-title">{{dealer.car_make}},{{dealer.car_model}}</h5>
+            <h5 class="card-title">{{dealer.car_year}}</h5>
+
+            <p class="card-text">{{dealer.review}}</p>
+
+
+        </div>
+    </div>
+
+
+
+    {% endfor %}
+
+</div>
+
+
+
+</body>
 
 </html>
